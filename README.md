@@ -11,10 +11,17 @@ Para realizar la tabla, el usuario seguirá los siguientes pasos:
 2. Se nombrará a cada uno de los equipos
 3. Se ingresará los resultados de cada jornada entre cada equipo.
 
+Los datos se ingresarán en un _archivo con valores  separados por comas **(.csv)**_
+
+Para que los datos sean leídos, se elegirá el archivo con el formato mencionado anteriormente. Como se muestra en la siguiente imagen:
+
+![Explorador de archivos](fileChooser.PNG)
+
+
 Una vez definidos los datos, el programa realizará los cálculos correspondientes y mostrará una tabla 
 similar a la mostrada a continuación:
 
-![Tabla de posiciones modelo](tablaModelo.PNG)
+![Tabla de posiciones modelo](tablaJava.PNG)
 
 ### Limitaciones
 
