@@ -1,6 +1,7 @@
 import javax.swing.JFrame;
 
-public class PositionTable {
+public class PositionTable 
+{
 	 
 	private MainWindow mainWindow = null;
 	   /**
@@ -9,7 +10,7 @@ public class PositionTable {
 	   public static void main(String[] args)
 	   {
 		   PositionTable positionTable = new PositionTable();
-		   positionTable.run();
+		   positionTable.run();		   		   
 	   }
 	   
 	   public void run()

@@ -1,19 +1,19 @@
 import java.awt.*;
 
 import javax.swing.*;
+import javax.swing.table.TableColumn;
 
 /**
  *
  */
-public class Table extends JPanel{
-	private JPanel positionTable;
-	public Table() {
+public class Table extends JPanel
+{	
+	JPanel positionTable = new JPanel();
+	
+	public void dTable() 
+	{
 		setLayout(new BorderLayout());
 		
-		JButton firstButton= new JButton("Loading");
-		add(firstButton, BorderLayout.SOUTH);
-		
-		positionTable = new JPanel();
 		positionTable.setLayout(new GridLayout(13,10));
 		
 		add(positionTable, BorderLayout.CENTER);
@@ -29,7 +29,8 @@ public class Table extends JPanel{
 		addButtons("DG");
 		addButtons("Pts");
 		
-		for (int index = 1; index < 13; index++) {
+		for (int index = 1; index < 13; index++) 
+		{
 			addButtons("# "+ index);
 			addButtons("Equipo " +index);
 			addButtons("-");
@@ -45,8 +46,36 @@ public class Table extends JPanel{
 		
 	}
 	
-	private void addButtons(String buttonName) {
+	private void addButtons(String buttonName) 
+	{
 		JButton button = new JButton(buttonName);
-		positionTable.add(button);
+		this.positionTable.add(button);
 	}
+	
+	public Table()
+	{
+		String[] headers = {"#", "Equipo", "PJ", "PG",
+							"PE", "PP", "GF", "GC", "+/-", "Pts"};
+		
+		String[][] teamStats = new String[13][13];
+		
+		JTable table = new JTable(teamStats, headers);
+		
+		TableColumn column = null;
+		for (int col = 0; col < 5; col++) 
+		{
+			column = table.getColumnModel().getColumn(col);
+
+			if (col == 0)
+				column.setPreferredWidth(20);
+			else if(col == 1)
+				column.setPreferredWidth(100);
+			else
+				column.setPreferredWidth(70);
+		    
+		}
+		
+		this.add(table);
+	}
+
 }
