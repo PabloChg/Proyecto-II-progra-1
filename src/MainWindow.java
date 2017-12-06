@@ -1,12 +1,10 @@
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.File;
 import javax.swing.*;
 
-public class MainWindow extends JFrame implements MouseListener
+public class MainWindow extends JFrame
 {
-	private JPanel positionTable;
+	private JPanel positionTable = null;
+	
 	public MainWindow() 
 	{		
 		super("Tabla de Posiciones");
@@ -16,29 +14,13 @@ public class MainWindow extends JFrame implements MouseListener
 		BorderLayout mainLayout = new BorderLayout();
 		this.setLayout( mainLayout );
 		
-		this.createIndicators();
 		this.createTable();	
-		this.createButtons();		
+		this.createButtons();	
 	}
-	
-	public void createIndicators()
-	{
-		JPanel indicators = new JPanel();
-		indicators.setLayout(new BorderLayout() );
-		
-		JLabel teams = new JLabel("Teams: #");
-		
-		indicators.add(teams, BorderLayout.NORTH);
-		
-		this.add(indicators, BorderLayout.NORTH);
-	}
-	
 	
 	public void createTable()
 	{
-		
 		Table table = new Table();
-		
 		this.add(table, BorderLayout.CENTER);
 	}
 	
@@ -47,70 +29,22 @@ public class MainWindow extends JFrame implements MouseListener
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new BorderLayout() );
 		
-		JButton fileFinder = new JButton("Choose file");
-		buttons.add(fileFinder, BorderLayout.WEST);
-		fileFinder.addMouseListener(this);
+		JButton fileChooser = new JButton("ChooseFile");
+		buttons.add(fileChooser, BorderLayout.WEST);
+		fileChooser.addActionListener(new ButtonListener());
+		fileChooser.setActionCommand("file");
 		
 		JButton refreshButton = new JButton("Refresh");
 		buttons.add(refreshButton, BorderLayout.CENTER);
-		refreshButton.addMouseListener(this);
-		
+		refreshButton.addActionListener(new ButtonListener());
+		refreshButton.setActionCommand("refresh");
 		
 		JButton closeButton = new JButton("Close");
 		buttons.add(closeButton, BorderLayout.EAST);
-		closeButton.addMouseListener(this);
+		closeButton.addActionListener(new ButtonListener());
+		closeButton.setActionCommand("close");
 		
 		this.add(buttons, BorderLayout.SOUTH);
 	}
-
-	public void fileChooser()
-	{
-		// FileChooser
-		JFileChooser fileChooser = new JFileChooser();
-		int result = fileChooser.showOpenDialog(this);
-		if (result == JFileChooser.APPROVE_OPTION) 
-		{
-		    File selectedFile = fileChooser.getSelectedFile();
-		    System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-		}
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e)
-	{
-		System.out.println("closed");
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) 
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) 
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) 
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) 
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	
-
 	
 }
