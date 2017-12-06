@@ -1,0 +1,13 @@
+3,Heredia,Saprissa,Perez Zeledon,Santos
+1,Heredia,1,Saprissa,1
+2,Heredia,2,Perez Zeledon,2
+3,Heredia,3,Santos,3
+1,Saprissa,4,Heredia,4
+2,Saprissa,5,Perez Zeledon,5
+3,Saprissa,6,Santos,6
+1,Perez Zeledon,7,Saprissa,7
+2,Perez Zeledon,8,Heredia,8
+3,Perez Zeledon,9,Santos,9
+1,Santos,10,Heredia,10
+2,Santos,11,Perez Zeledon,11
+3,Santos,12,Saprissa,12
