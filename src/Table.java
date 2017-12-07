@@ -1,3 +1,7 @@
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.Label;
+
 import javax.swing.*;
 import javax.swing.table.TableColumn;
 
@@ -18,39 +22,42 @@ public class Table extends JPanel
 	 */
 	public Table()
 	{
-		// Create a tentative table
-		// TODO The table dimensions will be according to the teams read from the csv file
-		String[][] teamStats = new String[13][13];
-		
-		// Fill the table with the stats of the teams
-		// TODO This will be filled with the teams data
-		for (int col = 0; col < 13; ++col)
-		{
-			for (int row = 0; row< 13; ++row)
-			{
-				teamStats[col][row] = "Test";
-			}
-		}
-		
-		// Create a table with the teams stats and the header
-		JTable table = new JTable(teamStats, header);
-		
-		TableColumn column = null;
-		// Set some dimensions for the table to avoid extra space
-		for (int col = 0; col < 10; col++) 
-		{
-			column = table.getColumnModel().getColumn(col);
+	
+		positionTable = new JPanel();
+		positionTable.setLayout(new GridLayout(13,10));
+		add(positionTable, BorderLayout.CENTER);
 
-			if (col == 0)
-				column.setPreferredWidth(20);
-			else if(col == 1)
-				column.setPreferredWidth(100);
-			else
-				column.setPreferredWidth(70);   
+		add(positionTable, BorderLayout.CENTER);
+
+		addText("#");
+		addText("Equipo");
+		addText("PJ");
+		addText("V");
+		addText("E");
+		addText("D");
+		addText("GF");
+		addText("GC");
+		addText("DG");
+		addText("Pts");
+
+		for (int index = 1; index < 13; index++) {
+			addText("# "+ index);
+			addText("Equipo " +index);
+			addText("-");
+			addText("-");
+			addText("-");
+			addText("-");
+			addText("-");
+			addText("-");
+			addText("-");
+			addText("-");
+
 		}
-		
-		// Add the created table to the main window
-		this.add(table);
 	}
+	private void addText(String buttonName) {
+		Label label = new Label(buttonName);
+		positionTable.add(label);
+}
+
 
 }
