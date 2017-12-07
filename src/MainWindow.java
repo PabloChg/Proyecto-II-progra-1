@@ -38,16 +38,26 @@ public class MainWindow extends JFrame
 	 * Create the three buttons that will be used for the program
 	 */
 	public void createButtons()
-	{		
+	{	
+		
+		
 		// Create a panel with the buttons
 		JPanel buttons = new JPanel();
-		buttons.setLayout(new BorderLayout() );
+		buttons.setLayout(new GridLayout(0, 4));
+		
+		
 		
 		// Create the file chooser button
-		JButton fileChooser = new JButton("ChooseFile");
+		JButton fileChooser = new JButton("Choose File");
 		buttons.add(fileChooser, BorderLayout.WEST);
 		fileChooser.addActionListener(new ButtonListener());
 		fileChooser.setActionCommand("file");
+		
+		
+		JButton setUpButton = new JButton("Setup file");
+		buttons.add(setUpButton, BorderLayout.EAST);
+		setUpButton.addActionListener(new ButtonListener());
+		setUpButton.setActionCommand("setup");
 		
 		// Create the button that refreshes the table 
 		JButton refreshButton = new JButton("Refresh");
@@ -60,9 +70,11 @@ public class MainWindow extends JFrame
 		buttons.add(closeButton, BorderLayout.EAST);
 		closeButton.addActionListener(new ButtonListener());
 		closeButton.setActionCommand("close");
+	
 		
 		// Add the buttons to the bottom of the main window
 		this.add(buttons, BorderLayout.SOUTH);
 	}
+	
 	
 }

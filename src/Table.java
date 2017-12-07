@@ -16,13 +16,12 @@ public class Table extends JPanel
 	// Create the header of the table
 	private static final String[] header = {"#", "Equipo", "PJ", "PG",
 						"PE", "PP", "GF", "GC", "+/-", "Pts"};
-	
+
 	/**
 	 * Creates a table
 	 */
 	public Table()
 	{
-	
 		positionTable = new JPanel();
 		positionTable.setLayout(new GridLayout(13,10));
 		add(positionTable, BorderLayout.CENTER);
@@ -57,7 +56,7 @@ public class Table extends JPanel
 	private void addText(String buttonName) {
 		Label label = new Label(buttonName);
 		positionTable.add(label);
-}
+	}
 
 
 }

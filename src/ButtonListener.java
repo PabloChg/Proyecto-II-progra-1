@@ -35,7 +35,7 @@ public class ButtonListener implements ActionListener
 			else
 			{
 				System.err.println("Cannot refresh");
-				// Dialog that says it cant be refreshed because no file has been chose
+				// Dialog that says it can't be refreshed because no file has been chose
 			}
 		}
 		
