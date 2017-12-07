@@ -110,13 +110,13 @@ public class FileParser
 		Team[] teams = new Team[data.length];
 		
 		// Create a team with each name read from the file
-		for (int index = 1; index < data.length; ++index )
+		for (int index = 0; index < data.length; ++index )
 		{
 			Team team = new Team(data[index]);
 			
 			teams[index] = team;
 			
-			System.out.printf("%s%d: %s%n", "Team #", index, teams[index].getName());
+			System.out.printf("%s%d: %s%n", "Team #", index + 1, teams[index].getName());
 		}
 		
 		System.out.println("ROUNDS= " + teams.length);

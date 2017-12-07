@@ -8,7 +8,8 @@ import java.awt.event.ActionListener;
 public class ButtonListener implements ActionListener
 {
 	boolean fileChoosed = false;
-	private FileParser parser = new FileParser();
+	
+	private FileParser parser = null;
 	
 	@Override
 	public void actionPerformed(ActionEvent event)
@@ -27,7 +28,7 @@ public class ButtonListener implements ActionListener
 		{
 			System.out.println("Refresh button clicked");
 			
-			if (this.fileChoosed)
+			if (fileChoosed())
 			{
 				System.out.println("Refreshing...");
 				this.parser.parse();
@@ -41,14 +42,27 @@ public class ButtonListener implements ActionListener
 		
 		if (event.getActionCommand().equals("file"))
 		{
+			parser = new FileParser();
+			
 	 		if ( parser.fileChooser() );
 	 		{
 	 			System.out.println("File has been chosen!");
 	 	 		parser.parse();
+	 	 		fileChoosed = true;
 	 		}
 	 		
- 	 		this.fileChoosed = true;	
+
 		}
+		
+		if (event.getActionCommand().equals("setup"))
+		{
+			
+		}
+	}
+	
+	public boolean fileChoosed()
+	{
+		return this.fileChoosed;
 	}
 	
 }

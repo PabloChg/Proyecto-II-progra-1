@@ -1,5 +1,6 @@
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 
 public class MainWindow extends JFrame
 {
@@ -21,7 +22,7 @@ public class MainWindow extends JFrame
 		
 		// Create the table and the buttons of the window
 		this.createTable();	
-		this.createButtons();	
+		this.createButtons();
 	}
 	
 	/**
@@ -31,6 +32,7 @@ public class MainWindow extends JFrame
 	{
 		// Create the table and add it to the main window
 		Table table = new Table();
+		
 		this.add(table, BorderLayout.CENTER);
 	}
 	
@@ -44,31 +46,31 @@ public class MainWindow extends JFrame
 		// Create a panel with the buttons
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new GridLayout(0, 4));
-		
-		
+		buttons.setBorder(new TitledBorder("Opciones"));
+		ButtonListener listener = new ButtonListener();
 		
 		// Create the file chooser button
 		JButton fileChooser = new JButton("Choose File");
 		buttons.add(fileChooser, BorderLayout.WEST);
-		fileChooser.addActionListener(new ButtonListener());
+		fileChooser.addActionListener(listener);
 		fileChooser.setActionCommand("file");
 		
 		
 		JButton setUpButton = new JButton("Setup file");
 		buttons.add(setUpButton, BorderLayout.EAST);
-		setUpButton.addActionListener(new ButtonListener());
+		setUpButton.addActionListener(listener);
 		setUpButton.setActionCommand("setup");
 		
 		// Create the button that refreshes the table 
 		JButton refreshButton = new JButton("Refresh");
 		buttons.add(refreshButton, BorderLayout.CENTER);
-		refreshButton.addActionListener(new ButtonListener());
+		refreshButton.addActionListener(listener);
 		refreshButton.setActionCommand("refresh");
 		
 		// Create the close window button
 		JButton closeButton = new JButton("Close");
 		buttons.add(closeButton, BorderLayout.EAST);
-		closeButton.addActionListener(new ButtonListener());
+		closeButton.addActionListener(listener);
 		closeButton.setActionCommand("close");
 	
 		
