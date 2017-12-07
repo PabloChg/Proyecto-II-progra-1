@@ -7,31 +7,46 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- * 
+ * Parses the csv file set by the user
  */
 public class FileParser 
 {
+	// Create a component
 	private Component fileComponent;
+	// Create a null reference of a file
 	private File file = null;
+	// Create a reference of the file path
 	private String filePath = "";
+	// Reference of the default separator of a csv file
     private static final String DEFAULT_SEPARATOR = ",";
 	
+    /**
+     * Parses the read csv file
+     */
    	public void parse()
 	{        
         printTest();
 	}
    	
+   	/**
+   	 * Test that reads the csv file
+   	 */
    	private void printTest()
    	{
         String line = "";
         
+        // Try to create a scanner that reads the selected file
         try (Scanner input = new Scanner(new FileReader(filePath))) 
         {
+        	// Read the teams
         	line = input.nextLine();
+        	// Create an array with the teams
         	String[] text1 = line.split(DEFAULT_SEPARATOR);
         	
+        	//Create the teams with the read numbers
         	setupTeams(text1);
         	
+        	// Read each round
             while (input.hasNextLine())  
             {                	
             	String[] text = input.nextLine().split(","); 
@@ -46,6 +61,10 @@ public class FileParser
         }
    	}
 	
+   	/**
+   	 * Creates and opens the window to choose the csv file
+   	 * @return true if a correct file was chose
+   	 */
 	public boolean fileChooser()
 	{
 		// Create a fileChooser object on default folder
@@ -79,14 +98,18 @@ public class FileParser
 		}
 	}
 	
+	/**
+	 * Creates an array with all the teams
+	 * @param data an array with the name of each team
+	 */
 	public void setupTeams(String[] data)
 	{
-		int rounds = Integer.parseInt(data[0]);
+		// TODO This method will be called from another class and return the array
 		
+		// Create the array
 		Team[] teams = new Team[data.length];
 		
-		System.out.println("ROUNDS= " + rounds);
-		
+		// Create a team with each name read from the file
 		for (int index = 1; index < data.length; ++index )
 		{
 			Team team = new Team(data[index]);
@@ -95,5 +118,7 @@ public class FileParser
 			
 			System.out.printf("%s%d: %s%n", "Team #", index, teams[index].getName());
 		}
+		
+		System.out.println("ROUNDS= " + teams.length);
 	}
 }

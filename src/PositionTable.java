@@ -1,8 +1,13 @@
 import javax.swing.JFrame;
 
+/**
+ * Program that makes a table with the positions of a soccer tournament
+ */
 public class PositionTable 
 {
-	 
+	/**
+	 * Main window of the program
+	 */
 	private MainWindow mainWindow = null;
 	   /**
 	    * @param args
