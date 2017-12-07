@@ -12,9 +12,7 @@ import javax.swing.table.TableColumn;
  */
 public class Table extends JPanel
 {	
-	// Create a panel with the table
-	JPanel positionTable = null;
-		
+
 	// Create the header of the table
 	private static final String[] header = {"#", "Equipo", "PJ", "PG",
 						"PE", "PP", "GF", "GC", "+/-", "Pts"};
@@ -24,10 +22,8 @@ public class Table extends JPanel
 	 */
 	public Table()
 	{
-		positionTable = new JPanel();
-		positionTable.setLayout(new GridLayout(13,10));
-		positionTable.setBorder(new TitledBorder("Tabla de posiciones"));
-		add(positionTable, BorderLayout.CENTER);
+		this.setLayout(new GridLayout(13,10));
+		this.setBorder(new TitledBorder("Tabla de posiciones"));
 
 		addText("#");
 		addText("Equipo");
@@ -60,10 +56,8 @@ public class Table extends JPanel
 	
 	private void addText(String buttonName) 
 	{
-		JPanel label = new JPanel();
 		Label text = new Label(buttonName);
-		label.add(text);
-		positionTable.add(label);
+		this.add(text);
 	}
 
 

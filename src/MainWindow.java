@@ -36,7 +36,7 @@ public class MainWindow extends JFrame
 		// Create the table and add it to the main window
 		Table table = new Table();
 		
-		this.add(table, BorderLayout.NORTH);
+		this.add(table, BorderLayout.CENTER);
 	}
 	
 	/**
@@ -79,14 +79,15 @@ public class MainWindow extends JFrame
 		// Add the buttons to the bottom of the main window
 		this.add(buttons, BorderLayout.SOUTH);
 	}
-	public void createStatus() {
+	
+	public void createStatus() {/*
 		JPanel status = new JPanel();
 		Label text = new Label("Status");
 		status.add(text);
 		status.setBorder(new TitledBorder("status"));
 
-		this.add(status, BorderLayout.CENTER);
-
+		this.add(status, BorderLayout.SOUTH);
+		*/
 		
 	}
 	

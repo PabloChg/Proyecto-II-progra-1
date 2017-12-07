@@ -78,6 +78,7 @@ public class FileParser
 		
 		int result = fileChooser.showOpenDialog(fileComponent);
 		
+		
 		//TODO JFileChooser is supposed to return an int depending on a certain action
 		if (result == JFileChooser.APPROVE_OPTION) 
 		{
