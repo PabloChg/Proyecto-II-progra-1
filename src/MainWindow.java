@@ -6,6 +6,8 @@ public class MainWindow extends JFrame
 {
 	private JPanel positionTable = null;
 	
+	private ButtonListener listener = new ButtonListener();
+	
 	public MainWindow() 
 	{		
 		// Set the window title
@@ -23,6 +25,7 @@ public class MainWindow extends JFrame
 		// Create the table and the buttons of the window
 		this.createTable();	
 		this.createButtons();
+		this.createStatus();
 	}
 	
 	/**
@@ -33,7 +36,7 @@ public class MainWindow extends JFrame
 		// Create the table and add it to the main window
 		Table table = new Table();
 		
-		this.add(table, BorderLayout.CENTER);
+		this.add(table, BorderLayout.NORTH);
 	}
 	
 	/**
@@ -47,7 +50,6 @@ public class MainWindow extends JFrame
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new GridLayout(0, 4));
 		buttons.setBorder(new TitledBorder("Opciones"));
-		ButtonListener listener = new ButtonListener();
 		
 		// Create the file chooser button
 		JButton fileChooser = new JButton("Choose File");
@@ -76,6 +78,16 @@ public class MainWindow extends JFrame
 		
 		// Add the buttons to the bottom of the main window
 		this.add(buttons, BorderLayout.SOUTH);
+	}
+	public void createStatus() {
+		JPanel status = new JPanel();
+		Label text = new Label("Status");
+		status.add(text);
+		status.setBorder(new TitledBorder("status"));
+
+		this.add(status, BorderLayout.CENTER);
+
+		
 	}
 	
 	

@@ -17,48 +17,71 @@ public class ButtonListener implements ActionListener
 		//TODO Preguntar si cada accion se puede dividir en metodos
 		// o si deben estar todos en este metodo.
 		
-		if (event.getActionCommand().equals("close"))
-		{
-			System.out.println("Close button clicked");
-			// TODO Preguntar como hacer para cerrar sin el System.exit(0);
-			System.exit(0);
+		switch(event.getActionCommand()) {
+		case"close": this.closeButton(); break;
+		case"refresh":this.refreshButton(); break;
+		case"file": this.fileButton(); break;
+		case"setup": this.setupButton(); break;
+		
 		}
 		
-		if (event.getActionCommand().equals("refresh"))
-		{
-			System.out.println("Refresh button clicked");
-			
-			if (fileChoosed())
-			{
-				System.out.println("Refreshing...");
-				this.parser.parse();
-			}
-			else
-			{
-				System.err.println("Cannot refresh");
-				// Dialog that says it can't be refreshed because no file has been chose
-			}
-		}
-		
-		if (event.getActionCommand().equals("file"))
-		{
-			parser = new FileParser();
-			
-	 		if ( parser.fileChooser() );
-	 		{
-	 			System.out.println("File has been chosen!");
-	 	 		parser.parse();
-	 	 		fileChoosed = true;
-	 		}
-	 		
+	}	
+	/**
+	 * Close button function
+	 */
+	public void closeButton() {
+		System.out.println("Close button clicked");
+		// TODO Preguntar como hacer para cerrar sin el System.exit(0);
+		System.exit(0);
+	}
+	/**
+	 * Refresh button function
+	 */
+	public void refreshButton() {
+		System.out.println("Refresh button clicked");
 
-		}
-		
-		if (event.getActionCommand().equals("setup"))
+		if (fileChoosed())
 		{
-			
+			System.out.println("Refreshing...");
+			this.parser.parse();
+		}
+		else
+		{
+			System.err.println("Cannot refresh");
+			// Dialog that says it can't be refreshed because no file has been chose
 		}
 	}
+	/**
+	 * file button function
+	 */
+	public void fileButton() {
+		parser = new FileParser();
+		
+ 		if ( parser.fileChooser() );
+ 		{
+ 			System.out.println("File has been chosen!");
+ 	 		parser.parse();
+ 	 		fileChoosed = true;
+ 		}
+	}
+	/**
+	 * setup button function
+	 */
+	public void setupButton() {
+		
+	}
+		
+
+
+			
+		
+		
+		
+		
+		
+	
+	
+	
 	
 	public boolean fileChoosed()
 	{
