@@ -1,6 +1,7 @@
 import java.awt.Component;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
@@ -23,8 +24,10 @@ public class FileParser
     /**
      * Parses the read csv file
      */
-   	public void parse()
+   	public void parse(String path, File file)
 	{        
+   		this.filePath = path;
+   		this.file = file;
         printTest();
 	}
    	
@@ -48,10 +51,19 @@ public class FileParser
         	
         	// Read each round
             while (input.hasNextLine())  
-            {                	
-            	String[] text = input.nextLine().split(","); 
+            {            
+            	line = input.nextLine();
+            	if (line.equals("STOP"))
+            	{
+            		break;
+            	}
+            	else
+            	{
+                	String[] text = line.split(","); 
 
-                System.out.printf("%15s|%15s|%15s|%15s|%15s%n", text[0], text[1], text[2], text[3], text[4]);
+                    System.out.printf("%15s|%15s|%15s|%15s|%15s%n", text[0], text[1], text[2], text[3], text[4]);
+            	}
+
             }
 
         }
@@ -60,44 +72,97 @@ public class FileParser
             e.printStackTrace();
         }
    	}
-	
-   	/**
-   	 * Creates and opens the window to choose the csv file
-   	 * @return true if a correct file was chose
-   	 */
-	public boolean fileChooser()
-	{
-		// Create a fileChooser object on default folder
-		JFileChooser fileChooser = new JFileChooser();
-		
-		// Add extension to make the chooser accept only csv files
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("*.CSV", "csv");
-		 
-		//Set the filter as .csv
-		fileChooser.setFileFilter(filter);
-		
-		int result = fileChooser.showOpenDialog(fileComponent);
-		
-		
-		//TODO JFileChooser is supposed to return an int depending on a certain action
-		if (result == JFileChooser.APPROVE_OPTION) 
-		{
-		    //Set the selected file
-		    this.file = fileChooser.getSelectedFile();	
-		    
-			// Print the selected path in case of debugging 
-		    System.out.println("Selected file: " + this.file.getAbsolutePath());
-		    
-		    // Set the file path where to look the csv file
-		    this.filePath = this.file.getAbsolutePath();
-		    
-		    return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
+   	
+   	public void writeOnCsv(File file, String[] teams)
+   	{
+   		this.file = file;
+   		
+   		FileWriter writer = null;
+
+   		try 
+   		{
+   			writer = new FileWriter(this.file);
+   			
+   			writeTeams(teams, writer);
+   			writeRounds(teams, writer);
+
+   			System.out.println("CSV file created");
+   		} 
+   		catch (IOException e) 
+   		{
+   			e.printStackTrace();
+   		} 
+   		finally 
+   		{
+   			try 
+   			{
+   				writer.flush();
+   				writer.close();
+   			} 
+   			catch (IOException e)
+   			{
+   				e.printStackTrace();
+   			}
+   		}
+   	}
+   	
+   	public void writeTeams(String[] teams, FileWriter writer)
+   	{
+   		for(int team = 0; team < teams.length; ++team)
+   		{
+   			try 
+   			{
+				writer.append(teams[team]);
+				if (team == teams.length - 1)
+				{
+					writer.append("\n");
+				}
+				else
+				{
+					writer.append(",");
+				}
+				
+			} 
+   			catch (IOException e) 
+   			{
+				e.printStackTrace();
+			}
+   		}
+   	}
+   	
+   	public void writeRounds(String[] teams, FileWriter writer) throws IOException
+   	{
+   		int round = 1;
+   		
+   		for(int homeTeam = 0; homeTeam < teams.length; ++homeTeam)
+   		{
+   			for(int visitTeam = 0; visitTeam < teams.length; ++visitTeam)
+   			{
+				if (homeTeam == visitTeam)
+				{
+					continue;
+				}
+				
+   				// Write the round
+   				writer.append(round + ",");
+   				//Write home team
+				writer.append(teams[homeTeam] + ",");
+				// Write space for the goals
+				writer.append("HOME_GOALS" + ",");
+				// Write visit team
+				writer.append(teams[visitTeam] + ",");
+				// Write space for the goals
+				writer.append("VISIT_GOALS");
+				writer.append("\n");
+				
+				++round;
+   			}
+
+   		}
+   		
+   		writer.append("STOP" + "\n");
+   	}
+   	
 	
 	/**
 	 * Creates an array with all the teams
@@ -119,7 +184,5 @@ public class FileParser
 			
 			System.out.printf("%s%d: %s%n", "Team #", index + 1, teams[index].getName());
 		}
-		
-		System.out.println("ROUNDS= " + teams.length);
 	}
 }

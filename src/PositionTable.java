@@ -19,7 +19,7 @@ public class PositionTable
 	   }
 	   
 	   public void run()
-	   {
+	   {   
 	      this.mainWindow = new MainWindow();
 	      this.mainWindow.setVisible(true);
 	      this.mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
