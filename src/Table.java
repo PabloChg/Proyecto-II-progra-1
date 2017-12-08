@@ -15,7 +15,7 @@ public class Table extends JPanel
 
 	// Create the header of the table
 	private static final String[] header = {"#", "Equipo", "PJ", "PG",
-						"PE", "PP", "GF", "GC", "+/-", "Pts"};
+			"PE", "PP", "GF", "GC", "+/-", "Pts"};
 
 	/**
 	 * Creates a table
@@ -35,7 +35,7 @@ public class Table extends JPanel
 		addText("GC");
 		addText("DG");
 		addText("Pts");
-	
+
 
 		for (int index = 1; index < 13; index++) {
 			addText("# "+ index);
@@ -50,10 +50,10 @@ public class Table extends JPanel
 			addText("-");
 
 		}
-	
+		
 	}
-	
-	
+
+
 	private void addText(String buttonName) 
 	{
 		Label text = new Label(buttonName);
