@@ -1,4 +1,21 @@
+<<<<<<< HEAD
 Saprissa,Heredia
 1,Saprissa,2,Heredia,0
 2,Heredia,0,Saprissa,2
 STOP
+=======
+heredia,saprissa,perez zeledon,santos
+1,heredia,1,saprissa,12
+2,heredia,2,perez zeledon,11
+3,heredia,3,santos,10
+4,saprissa,4,heredia,9
+5,saprissa,5,perez zeledon,8
+6,saprissa,6,santos,7
+7,perez zeledon,7,heredia,6
+8,perez zeledon,8,saprissa,5
+9,perez zeledon,9,santos,4
+10,santos,10,heredia,3
+11,santos,11,saprissa,2
+12,santos,12,perez zeledon,1
+STOP
+>>>>>>> 73b848b9c211b722ecd183d668b649fcf25878f7
