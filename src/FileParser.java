@@ -20,72 +20,94 @@ public class FileParser
 	private String filePath = "";
 	// Reference of the default separator of a csv file
 	private static final String DEFAULT_SEPARATOR = ",";
-	//String array with all the teams
-	private String [] teams ;
-	//String array with all the matches 
-	private String [] matches ;
 	
+	String[] names = null;
 	/**
 	 * Parses the read csv file
 	 */
-	public void parse(String path, File file)
+	public Team[] parse(String path, File file)
 	{        
 		this.filePath = path;
 		this.file = file;
-		printTest();
-	}
 
-	/**
-	 * Test that reads the csv file
-	 */
-	private void printTest()
-	{
-		String line = "";
-
+		
 		// Try to create a scanner that reads the selected file
-		try (Scanner input = new Scanner(new FileReader(filePath))) 
+		try (Scanner input = new Scanner( new FileReader(filePath) )) 
 		{
 			// Read the teams
-			line = input.nextLine();
-			// Create an array with the teams
-			this.teams = line.split(DEFAULT_SEPARATOR);
+			String line = input.nextLine();
+			// Create an array with the teams' names
+			this.names = line.split(DEFAULT_SEPARATOR);
 
 			//Create the teams with the read numbers
-			setupTeams(this.teams);
-			
-			//Array with all the matches data 
-			this.matches = new String [(this.teams.length - 1)*4];
-						
-			int index = 0;
-			// Read each round
-			while (input.hasNextLine())  
-			{           
+			Team[] teams = setupTeams(names);
 				
-				line = input.nextLine();
-				if (line.equals("STOP"))
-				{
-					break;
-				}
-				else
-				{
-					
-					this.matches[index] = line;
-
-					String [] text = line.split(DEFAULT_SEPARATOR); 
-
-					
-					System.out.printf("%15s|%15s|%15s|%15s|%15s%n", text[0], text[1], text[2], text[3], text[4]);
-					
-				}
-				index++;
+			teams = assignData(teams, input);
+			
+			for (int team = 0; team < teams.length ; ++team)
+			{
+				teams[team].calculateStatistics();
 			}
-
+			
+			return teams;
+			
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
+			return null;
 		}
 	}
+
+	public Team[] assignData(Team[] teams, Scanner input)
+	{
+		String line = "";
+		
+		// Read each round      
+		while(input.hasNextLine())
+		{	
+			line = input.nextLine();
+			
+			if (line.equals("STOP"))
+				break;
+				
+			String[] text = line.split(DEFAULT_SEPARATOR); 
+			
+			try
+			{
+				int homeGoals = Integer.parseInt(text[2]);
+				int visitGoals = Integer.parseInt(text[4]);
+				
+				// Add goals to the home team
+				for (int homeTeam = 0 ; homeTeam < teams.length ; ++homeTeam)
+				{	
+					if(teams[homeTeam].getName().equals(text[1]))
+					{
+						teams[homeTeam].addGoals(homeGoals, visitGoals);
+						break;
+					}
+				}
+				
+				// Add goals to the visit team
+				for (int visitTeam = 0 ; visitTeam < teams.length ; ++visitTeam)
+				{	
+					if (teams[visitTeam].getName().equals(text[3]))
+					{
+						teams[visitTeam].addGoals(visitGoals, homeGoals);
+						break;
+					}
+				}
+			}
+			catch (NumberFormatException exception) // If the user didn't modify the HOME_GOALS or VISIT_GOALS
+			{
+				System.err.println("Cannot parse goals");
+			}
+		}
+		
+		
+		return teams;
+	}
+	
 	/**
 	 * 
 	 * @param file
@@ -212,18 +234,10 @@ public class FileParser
 
 			System.out.printf("%s%d: %s%n", "Team #", index + 1, teams[index].getName());
 		}
+		
 		return teams;
 	}
-	
-	
-	public String [] getTeamMatches() {
 
-		return this.matches;
-	}
-	public String [] getTeams() {
-
-		return this.teams;
-	}
 
 	
 }

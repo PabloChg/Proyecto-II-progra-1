@@ -14,7 +14,7 @@ public class MainWindow extends JFrame implements ActionListener
 
 	private FileParser parser = new FileParser();
 	
-	private Team team = new Team(null);
+	private Team[] teams = null;
 	
 	private JPanel information = null;
 
@@ -26,7 +26,6 @@ public class MainWindow extends JFrame implements ActionListener
 
 	private Label statusText = new Label();
 
-	private int [][] results ;
 	
 	
 	public MainWindow() 
@@ -122,10 +121,10 @@ public class MainWindow extends JFrame implements ActionListener
 	{		
 		switch( event.getActionCommand() )
 		{
-		case "close": this.closeButton(); break;
-		case "refresh":this.refreshButton(); break;
-		case "file": this.fileButton(); break;
-		case "structure": this.structureButton(); break;
+			case "close": this.closeButton(); break;
+			case "refresh":this.refreshButton(); break;
+			case "file": this.fileButton(); break;
+			case "structure": this.structureButton(); break;
 		}
 	}	
 
@@ -148,14 +147,14 @@ public class MainWindow extends JFrame implements ActionListener
 		if (fileChoosed)
 		{
 			System.out.println("Refreshing...");
-			parser.parse(this.filePath, file);
+			this.teams = parser.parse(this.filePath, file);
+			printPoints();
 			statusText.setText("Refreshed!");
-			this.getPositions();
 		}
 		else
 		{
 			statusText.setText("Cannot refresh, file not chose");
-			// Dialog that says it can't be refreshed because no file has been chose
+			// Dialog that says it can't be refreshed because no file has been chosen
 		}
 	}
 
@@ -166,10 +165,19 @@ public class MainWindow extends JFrame implements ActionListener
 	{
 		if ( fileChoosed() )
 		{
-			parser.parse(this.filePath, file);
+			this.teams = parser.parse(this.filePath, file);
 			statusText.setText("File: " + this.file.getName());
-			this.getPositions();
+			printPoints();
 			this.fileChoosed = true;
+		}
+	}
+
+	private void printPoints() 
+	{
+		for (int team = 0; team < teams.length; ++team)
+		{
+			System.out.printf("%s%nW:%d T:%d L:%d PTS:%d GF%d GC%d%n", teams[team].getName(), teams[team].getRoundsWon()
+					,teams[team].getRoundsTied(), teams[team].getRoundsLost(), teams[team].getPoints(), teams[team].getGoalsInFavor(), teams[team].getGoalsAgainst());
 		}
 	}
 
@@ -259,13 +267,6 @@ public class MainWindow extends JFrame implements ActionListener
 			return false;
 		}
 	}
-	public void getPositions() {
-		
-		team.setMatches(this.parser.getTeamMatches());
-		team.setTeamNames(this.parser.getTeams());
-		results = new int [this.parser.getTeams().length][7];
-		team.matchesResults();
-	
-	}
+
 
 }
