@@ -10,7 +10,7 @@ public class PositionTable
 	 */
 	private MainWindow mainWindow = null;
 	/**
-	 * @param args
+	 * main method
 	 */
 	public static void main(String[] args)
 	{

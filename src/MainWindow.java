@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.Arrays;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -19,14 +20,14 @@ public class MainWindow extends JFrame implements ActionListener
 	private JPanel information = null;
 
 	private File file = null;
-
+	
 	private String filePath = "";
 
 	private boolean fileChoosed = false;
 
 	private Label statusText = new Label();
 
-	
+	private Table table = new Table();
 	
 	public MainWindow() 
 	{		
@@ -59,9 +60,8 @@ public class MainWindow extends JFrame implements ActionListener
 	public void createTable()
 	{
 		// Create the table and add it to the main window
-		Table table = new Table();
-
-		this.add(table, BorderLayout.CENTER);
+		
+		this.add(this.table, BorderLayout.CENTER);
 	}
 
 	/**
@@ -147,8 +147,8 @@ public class MainWindow extends JFrame implements ActionListener
 		if (fileChoosed)
 		{
 			System.out.println("Refreshing...");
-			this.teams = parser.parse(this.filePath, file);
-			printPoints();
+			this.teams = parser.parse(this.filePath, this.file);
+			this.printPoints();
 			statusText.setText("Refreshed!");
 		}
 		else
@@ -167,18 +167,43 @@ public class MainWindow extends JFrame implements ActionListener
 		{
 			this.teams = parser.parse(this.filePath, file);
 			statusText.setText("File: " + this.file.getName());
-			printPoints();
+			this.printPoints();
 			this.fileChoosed = true;
 		}
 	}
-
+	/**
+	 * Print the final position table
+	 */
 	private void printPoints() 
 	{
-		for (int team = 0; team < teams.length; ++team)
-		{
-			System.out.printf("%s%nW:%d T:%d L:%d PTS:%d GF%d GC%d%n", teams[team].getName(), teams[team].getRoundsWon()
-					,teams[team].getRoundsTied(), teams[team].getRoundsLost(), teams[team].getPoints(), teams[team].getGoalsInFavor(), teams[team].getGoalsAgainst());
+		int [] points = new int [this.teams.length];
+		int [] positions = new int [this.teams.length];
+
+		for (int index = 0; index < this.teams.length; index++) {
+			points[index] = this.teams[index].getPoints();
 		}
+		Arrays.sort(points);
+		for (int index = 0; index < this.teams.length; index++) {
+			for (int location = 0; location < this.teams.length; location++) {
+
+				if (points[index] == this.teams[location].getPoints()) {
+					
+					positions[index] = location;
+				}
+			}
+		}
+		for (int index = 0; index < this.teams.length; index++) {
+			
+			System.out.println(positions[index]);
+		}
+		//Remove the default table
+		this.remove(this.table);
+		
+		//Create the new table
+		Table table = new Table (this.teams, positions);
+		this.add(table, BorderLayout.CENTER);
+
+		
 	}
 
 	/**
@@ -216,9 +241,13 @@ public class MainWindow extends JFrame implements ActionListener
 			}
 
 		}
-
+		
 	}
-
+	/**
+	 * 
+	 * @param teams
+	 * @return
+	 */
 	public String[] askNames(int teams)
 	{
 		String[] names = new String[teams];
