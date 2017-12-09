@@ -20,16 +20,8 @@ public class FileParser
 	private String filePath = "";
 	// Reference of the default separator of a csv file
 	private static final String DEFAULT_SEPARATOR = ",";
-<<<<<<< HEAD
 	
 	String[] names = null;
-=======
-	//String array with all the teams
-	private String [] teamNames ;
-	//String array with all the matches 
-	private String [] matches ;
-	private Team[] teams = null;
->>>>>>> 73b848b9c211b722ecd183d668b649fcf25878f7
 	/**
 	 * Parses the read csv file
 	 */
@@ -43,26 +35,12 @@ public class FileParser
 		try (Scanner input = new Scanner( new FileReader(filePath) )) 
 		{
 			// Read the teams
-<<<<<<< HEAD
 			String line = input.nextLine();
 			// Create an array with the teams' names
 			this.names = line.split(DEFAULT_SEPARATOR);
 
 			//Create the teams with the read numbers
 			Team[] teams = setupTeams(names);
-=======
-			line = input.nextLine();
-			// Create an array with the teams
-			this.teamNames = line.split(DEFAULT_SEPARATOR);
-			
-			//Array with all the matches data, the required space is all the total matches
-			this.matches = new String [(this.teamNames.length - 1)*4];
-						
-			int index = 0;
-			// Read each round
-			while (input.hasNextLine())  
-			{           
->>>>>>> 73b848b9c211b722ecd183d668b649fcf25878f7
 				
 			teams = assignData(teams, input);
 			
@@ -240,58 +218,26 @@ public class FileParser
 	 * Creates an array with all the teams
 	 * @param data an array with the name of each team
 	 */
-	public Team[] setupTeams()
+	public Team[] setupTeams(String[] data)
 	{
 		// TODO This method will be called from another class and return the array
 
 		// Create the array
-		this.teams = new Team[this.teamNames.length];
+		Team[] teams = new Team[data.length];
 
 		// Create a team with each name read from the file
-		for (int index = 0; index < this.teamNames.length; ++index )
+		for (int index = 0; index < data.length; ++index )
 		{
-			Team team = new Team(this.teamNames[index]);
+			Team team = new Team(data[index]);
 
-			this.teams[index] = team;
+			teams[index] = team;
 
-			System.out.printf("%s%d: %s%n", "Team #", index + 1, this.teams[index].getName());
+			System.out.printf("%s%d: %s%n", "Team #", index + 1, teams[index].getName());
 		}
-<<<<<<< HEAD
 		
 		return teams;
 	}
 
-=======
-		this.matchesResults();
 
-		return this.teams;
-	}
-	public void matchesResults()
-	{
-		for (int index = 0; index < this.matches.length; index++) {
-			String [] match = matches[index].split(",");
-			int homeGoals = Integer.parseInt(match[2]);
-			int visitGoals = Integer.parseInt(match[4]);
-
-			this.addResults(this.matchAnalyzer(match, 1), homeGoals, visitGoals);
-			this.addResults(this.matchAnalyzer(match, 3), visitGoals, homeGoals);
->>>>>>> 73b848b9c211b722ecd183d668b649fcf25878f7
-
-		}
-	}
-	public int matchAnalyzer(String [] singleMatch, int namePosition)
-	{
-		int teamsPosition = 0;
-		for (int index = 0; index < this.teamNames.length; index++) {
-			if (singleMatch[namePosition].equals(this.teamNames[index])) {
-				teamsPosition = index;
-			}
-		}
-		//return the teams position in the array of teamNames, which is equal to the array of teams
-		return teamsPosition;
-	}
-	public void addResults(int position, int goalsMaked, int goalsReceived )
-	{
-		this.teams[position].addResults(goalsMaked, goalsReceived);
-	}
+	
 }

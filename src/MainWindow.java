@@ -26,10 +26,6 @@ public class MainWindow extends JFrame implements ActionListener
 
 	private Label statusText = new Label();
 
-<<<<<<< HEAD
-=======
-	private Team[] teams;
->>>>>>> 73b848b9c211b722ecd183d668b649fcf25878f7
 	
 	
 	public MainWindow() 
@@ -271,23 +267,6 @@ public class MainWindow extends JFrame implements ActionListener
 			return false;
 		}
 	}
-<<<<<<< HEAD
 
-=======
-	public void getPositions() {
-		
-		this.teams = parser.setupTeams();
-		
-		for(int index = 0; index < this.teams.length;index++){
-			this.teams[index].setPoints();
-			this.teams[index].setGoalsDifference();
-			this.teams[index].setRoundsPlayed(this.teams.length);
-			
-
-			
-		}
-		
-	}
->>>>>>> 73b848b9c211b722ecd183d668b649fcf25878f7
 
 }
