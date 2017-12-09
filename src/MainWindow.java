@@ -26,7 +26,7 @@ public class MainWindow extends JFrame implements ActionListener
 
 	private Label statusText = new Label();
 
-	private int [][] results ;
+	private Team[] teams;
 	
 	
 	public MainWindow() 
@@ -261,11 +261,17 @@ public class MainWindow extends JFrame implements ActionListener
 	}
 	public void getPositions() {
 		
-		team.setMatches(this.parser.getTeamMatches());
-		team.setTeamNames(this.parser.getTeams());
-		results = new int [this.parser.getTeams().length][7];
-		team.matchesResults();
-	
+		this.teams = parser.setupTeams();
+		
+		for(int index = 0; index < this.teams.length;index++){
+			this.teams[index].setPoints();
+			this.teams[index].setGoalsDifference();
+			this.teams[index].setRoundsPlayed(this.teams.length);
+			
+
+			
+		}
+		
 	}
 
 }
