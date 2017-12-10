@@ -2,9 +2,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileWriter;
-import java.util.Arrays;
-
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -32,8 +29,8 @@ public class MainWindow extends JFrame implements ActionListener
 	public MainWindow() 
 	{		
 		// Set the window title
-		super("Tabla de Posiciones");
-
+		super("Tabla de Posiciones");	
+		
 		// Create a new panel
 		information = new JPanel();
 
@@ -75,28 +72,32 @@ public class MainWindow extends JFrame implements ActionListener
 		buttons.setBorder(new TitledBorder("Opciones"));
 
 		// Create the file chooser button
-		JButton fileChooser = new JButton("Choose File");
+		JButton fileChooser = new JButton("Elegir archivo");
 		buttons.add(fileChooser);
 		fileChooser.addActionListener(this);
 		fileChooser.setActionCommand("file");
+		fileChooser.setToolTipText("Abre una ventana para elegir el archivo .csv a leer.");
 
 
-		JButton setUpButton = new JButton("Structure file");
+		JButton setUpButton = new JButton("Estructurar archivo");
 		buttons.add(setUpButton);
 		setUpButton.addActionListener(this);
 		setUpButton.setActionCommand("structure");
+		setUpButton.setToolTipText("Reescribe el archivo seleccionado con el formato adecuado");
 
 		// Create the button that refreshes the table 
-		JButton refreshButton = new JButton("Refresh");
+		JButton refreshButton = new JButton("Refrescar");
 		buttons.add(refreshButton);
 		refreshButton.addActionListener(this);
 		refreshButton.setActionCommand("refresh");
+		refreshButton.setToolTipText("Refresca la tabla si se hicieron cambios al archivo seleccionado");
 
 		// Create the close window button
-		JButton closeButton = new JButton("Exit");
+		JButton closeButton = new JButton("Salir");
 		buttons.add(closeButton);
 		closeButton.addActionListener(this);
 		closeButton.setActionCommand("close");
+		closeButton.setToolTipText("Cierra esta ventana");
 
 
 		// Add the buttons to the bottom of the main window
@@ -107,7 +108,7 @@ public class MainWindow extends JFrame implements ActionListener
 	{
 		JPanel status = new JPanel();
 
-		statusText.setText("No file selected.");
+		statusText.setText("No hay un archivo seleccionado");
 		statusText.setPreferredSize(new Dimension(650, 20));
 
 		status.add(statusText, BorderLayout.CENTER);
@@ -133,7 +134,6 @@ public class MainWindow extends JFrame implements ActionListener
 	 */
 	public void closeButton() 
 	{
-		System.out.println("Close button clicked");
 		this.setVisible(false);
 		this.dispose();
 	}
@@ -146,14 +146,13 @@ public class MainWindow extends JFrame implements ActionListener
 
 		if (fileChoosed)
 		{
-			System.out.println("Refreshing...");
 			this.teams = parser.parse(this.filePath, this.file);
 			this.printPoints();
-			statusText.setText("Refreshed!");
+			statusText.setText("¡Refrescado correctamente!");
 		}
 		else
 		{
-			statusText.setText("Cannot refresh, file not chose");
+			statusText.setText("No se puede refrescar, elija un archivo primero");
 			// Dialog that says it can't be refreshed because no file has been chosen
 		}
 	}
@@ -176,35 +175,51 @@ public class MainWindow extends JFrame implements ActionListener
 	 */
 	private void printPoints() 
 	{
-		int [] points = new int [this.teams.length];
-		int [] positions = new int [this.teams.length];
-
-		for (int index = 0; index < this.teams.length; index++) {
+		int[] points = new int [this.teams.length];
+		Team[] orderedTeams = new Team[this.teams.length];
+		int highest = -1;
+		
+		// Save an array with the points of each team
+		for (int index = 0; index < this.teams.length; index++)
+		{
 			points[index] = this.teams[index].getPoints();
 		}
-		Arrays.sort(points);
-		for (int index = 0; index < this.teams.length; index++) {
-			for (int location = 0; location < this.teams.length; location++) {
-
-				if (points[index] == this.teams[location].getPoints()) {
-					
-					positions[index] = location;
+		
+		// Position of the current highest-points team
+		int currentHigh = 0;
+		
+		// Algorithm to order the teams based on their points
+		// We need to pass at least one time in each team to store it
+		for (int passade = 0; passade < teams.length; ++passade)
+		{
+			// We take the highest points from the array
+			for (int team = 0; team < teams.length ; ++team)
+			{
+				if (points[team] > highest)
+				{
+					// Save the current highest points
+					highest = points[team];
+					// Save the position of the team with the current highest points
+					currentHigh = team;
 				}
 			}
+			// Once we took the highest points, reset the variable
+			highest = -1;
+			// Set the highest points as -1 to ignore it and store the next one
+			points[currentHigh] = -1;
+			// Save the team with the current highest points until the last team is found
+			orderedTeams[passade] = this.teams[currentHigh];
 		}
-		for (int index = 0; index < this.teams.length; index++) {
-			
-			System.out.println(positions[index]);
-		}
+
 		//Remove the default table
 		this.remove(this.table);
-		
 		//Create the new table
-		Table table = new Table (this.teams, positions);
+		this.table = new Table(orderedTeams);
 		this.add(table, BorderLayout.CENTER);
-
-		
+		this.revalidate();
+		this.repaint();	
 	}
+	
 
 	/**
 	 * setup button function
@@ -214,14 +229,14 @@ public class MainWindow extends JFrame implements ActionListener
 
 		if (this.file == null)
 		{
-			statusText.setText("Cannot structure csv file, select one first");
+			statusText.setText("No se puede estructurar, elija un archivo primero");
 		}
 		else
 		{
 			boolean teamsSet = false;
 
 			int teams = 0;
-			String quantity = JOptionPane.showInputDialog(inputTeams, "Write the amount of teams");
+			String quantity = JOptionPane.showInputDialog(inputTeams, "Escriba la cantidad de equipos");
 
 			try
 			{
@@ -237,7 +252,7 @@ public class MainWindow extends JFrame implements ActionListener
 			{
 				String[] names = askNames(teams);
 				parser.writeOnCsv(file, names);
-				statusText.setText("File structured succesfully!");
+				statusText.setText("¡Archivo estructurado correctamente!");
 			}
 
 		}
@@ -254,7 +269,7 @@ public class MainWindow extends JFrame implements ActionListener
 
 		for (int team = 0; team < names.length; ++team)
 		{
-			names[team] = JOptionPane.showInputDialog(inputTeams, "Write the name of the team " + (team+1) );
+			names[team] = JOptionPane.showInputDialog(inputTeams, "Escriba el nombre del equipo  " + (team+1) );
 		}
 
 		return names;
@@ -292,7 +307,7 @@ public class MainWindow extends JFrame implements ActionListener
 		}
 		else 
 		{
-			statusText.setText("Canceled file selection");
+			statusText.setText("Selección de archivo cancelada");
 			return false;
 		}
 	}

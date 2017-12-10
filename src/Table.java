@@ -1,22 +1,14 @@
-import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Label;
-
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.TableColumn;
 
 /**
  * Creates the table with the teams
  */
 public class Table extends JPanel
 {	
-
-	// Create the header of the table
-	private static final String[] header = {"#", "Equipo", "PJ", "PG",
-			"PE", "PP", "GF", "GC", "+/-", "Pts"};
 
 	/**
 	 * Creates a table
@@ -26,18 +18,21 @@ public class Table extends JPanel
 		this.setLayout(new GridLayout(13,10));
 		this.setBorder(new TitledBorder("Tabla de posiciones"));
 
-		addTextFont("#");
-		addTextFont("Equipos");
-		addTextFont("PJ");
-		addTextFont("V");
-		addTextFont("E");
-		addTextFont("D");
-		addTextFont("GF");
-		addTextFont("GC");
-		addTextFont("DG");
-		addTextFont("Pts");
-		for (int index = 1; index < 13; index++) {
-			addTextFont("# "+ index);
+		// Add header
+		addTextFont("Posición", "Posición");
+		addTextFont("Equipos", "Equipos");
+		addTextFont("PJ", "Partidos jugados");
+		addTextFont("V", "Victorias");
+		addTextFont("E", "Empates");
+		addTextFont("D", "Derrotas");
+		addTextFont("GF", "Goles a favor");
+		addTextFont("GC", "Goles en contra");
+		addTextFont("+/-", "Diferencia de gol");
+		addTextFont("Pts", "Puntos");
+		
+		for (int index = 1; index < 13; index++) 
+		{
+			addTextFont("# "+ index, "");
 			addText("Equipo " +index);
 			addText("-");
 			addText("-");
@@ -50,44 +45,54 @@ public class Table extends JPanel
 
 		}
 	}
-	public Table (Team [] teams, int[] position) 
+	
+	public Table (Team[] teams) 
 	{
-		this.setLayout(new GridLayout(teams.length+1,10));
+		this.setLayout(new GridLayout(teams.length + 1, 10));
 		this.setBorder(new TitledBorder("Tabla de posiciones"));
 
-		addTextFont("#");
-		addTextFont("Equipos");
-		addTextFont("PJ");
-		addTextFont("V");
-		addTextFont("E");
-		addTextFont("D");
-		addTextFont("GF");
-		addTextFont("GC");
-		addTextFont("DG");
-		addTextFont("Pts");
+		// Add header
+		addTextFont("Posición", "Posición");
+		addTextFont("Equipos", "Equipos");
+		addTextFont("PJ", "Partidos jugados");
+		addTextFont("V", "Victorias");
+		addTextFont("E", "Empates");
+		addTextFont("D", "Derrotas");
+		addTextFont("GF", "Goles a favor");
+		addTextFont("GC", "Goles en contra");
+		addTextFont("+/-", "Diferencia de gol");
+		addTextFont("Pts", "Puntos");
 		
-		for (int index = 1; index < teams.length+1; index++) {
-			addTextFont("# "+ index );
-			addText(teams[position[position.length-index]].getName());
-			addText(Integer.toString(teams[position[position.length-index]].getRoundsPlayed()));
-			addText(Integer.toString(teams[position[position.length-index]].getRoundsWon()));
-			addText(Integer.toString(teams[position[position.length-index]].getRoundsTied()));
-			addText(Integer.toString(teams[position[position.length-index]].getRoundsLost()));
-			addText(Integer.toString(teams[position[position.length-index]].getGoalsInFavor()));
-			addText(Integer.toString(teams[position[position.length-index]].getGoalsAgainst()));
-			addText(Integer.toString(teams[position[position.length-index]].getGoalsDifference()));
-			addText(Integer.toString(teams[position[position.length-index]].getPoints()));
+		for (int index = 0 ; index < teams.length; ++index) 
+		{
+			System.out.println(teams[index].getName());
+			addTextFont("# "+ (index + 1), "" );
+			addText(teams[index].getName());
+			addText(Integer.toString(teams[index].getRoundsPlayed()));
+			addText(Integer.toString(teams[index].getRoundsWon()));
+			addText(Integer.toString(teams[index].getRoundsTied()));
+			addText(Integer.toString(teams[index].getRoundsLost()));
+			addText(Integer.toString(teams[index].getGoalsInFavor()));
+			addText(Integer.toString(teams[index].getGoalsAgainst()));
+			addText(Integer.toString(teams[index].getGoalsDifference()));
+			addText(Integer.toString(teams[index].getPoints()));
 		}
 	}
+	
 	private void addText(String buttonName) 
 	{
-		Label text = new Label(buttonName);
+		JLabel text = new JLabel(buttonName, SwingConstants.CENTER);
+		text.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		this.add(text);
 	}
-	private void addTextFont(String text)
+	
+	private void addTextFont(String text, String tooltip)
 	{
-		Label headers = new Label(text);
+		JLabel headers = new JLabel(text, SwingConstants.CENTER);
+		headers.setToolTipText(tooltip);
+		headers.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		headers.setFont(new Font("text",Font.BOLD, 15 ));
+
 		this.add(headers);
 
 	}
