@@ -51,6 +51,7 @@ public class FileParser
 				teams[team].calculateStatistics();
 			}
 			
+			this.fileProperlyModified = true;
 			return teams;
 			
 		}
@@ -60,10 +61,12 @@ public class FileParser
 			return null;
 		}
 	}
+	
 	public boolean getFileProperlyModified()
 	{		
 		return this.fileProperlyModified;
 	}
+	
 	public Team[] assignData(Team[] teams, Scanner input)
 	{
 		String line = "";
@@ -102,12 +105,12 @@ public class FileParser
 						break;
 					}
 				}
-				this.fileProperlyModified = true;
+				
 			}
 			catch (NumberFormatException exception) // If the user didn't modify the HOME_GOALS or VISIT_GOALS
 			{
+				// TODO Poner un mensaje que diga que tiene que meter los goles para que sirva
 				System.err.println("Cannot parse goals");
-				this.fileProperlyModified = false;
 			}
 		}
 		

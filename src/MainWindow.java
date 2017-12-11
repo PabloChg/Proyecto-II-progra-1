@@ -147,9 +147,12 @@ public class MainWindow extends JFrame implements ActionListener
 		if (fileChoosed)
 		{
 			this.teams = parser.parse(this.filePath, this.file);
-			this.printPoints();
+
 			if (this.checkSyntaxisFile())
+			{
 				statusText.setText("¡Refrescado correctamente!");
+				this.printPoints();
+			}
 		}
 		else
 		{
@@ -165,10 +168,13 @@ public class MainWindow extends JFrame implements ActionListener
 		if ( fileChoosed() )
 		{
 			this.teams = parser.parse(this.filePath, this.file);
-			this.printPoints();
+
 			if ( this.checkSyntaxisFile() )
+			{
 				statusText.setText("File: " + this.file.getName());
-			
+				this.printPoints();
+			}
+
 			this.fileChoosed = true;
 		}
 	}
@@ -181,9 +187,12 @@ public class MainWindow extends JFrame implements ActionListener
 	 */
 	public boolean checkSyntaxisFile()
 	{
-		if ( parser.getFileProperlyModified() ) {
+		if ( parser.getFileProperlyModified() ) 
+		{
 			return true;
-		} else {
+		} 
+		else 
+		{
 			statusText.setText("¡Archivo cvs con datos invalidos, proceda a estructurarlo! ");
 
 			this.structureButton();
@@ -215,7 +224,6 @@ public class MainWindow extends JFrame implements ActionListener
 			// We take the highest points from the array
 			for (int team = 0; team < teams.length ; ++team)
 			{
-				
 				if (points[team] > highest)
 				{
 					// Save the current highest points
@@ -223,7 +231,6 @@ public class MainWindow extends JFrame implements ActionListener
 					// Save the position of the team with the current highest points
 					currentHigh = team;
 				} 
-				
 			}
 			// Once we took the highest points, reset the variable
 			highest = -1;
@@ -232,6 +239,7 @@ public class MainWindow extends JFrame implements ActionListener
 			// Save the team with the current highest points until the last team is found
 			orderedTeams[passade] = this.teams[currentHigh];
 		}
+		
 		orderedTeams = this.teamsTied(orderedTeams);
 		//Remove the default table
 		this.remove(this.table);
@@ -242,27 +250,35 @@ public class MainWindow extends JFrame implements ActionListener
 		this.revalidate();
 		this.repaint();	
 	}
-	public Team[] teamsTied(Team[] orderedTeams) {
-		Team[] finalOrder = new Team[orderedTeams.length];
-		for (int passade = 0; passade < teams.length; ++passade){
-			for (int team = 0; team < teams.length ; ++team) {
-				
-				if ( orderedTeams[passade].getPoints() == orderedTeams[team].getPoints() && passade != team) {
-					if (orderedTeams[passade].getGoalsDifference() < orderedTeams[team].getGoalsDifference() ) {
-						Team temporal = orderedTeams[passade];
-						finalOrder[passade] = orderedTeams[team];
-						finalOrder[team] = temporal;
-						++passade;
-					} else {
-						finalOrder[passade] = orderedTeams[passade];
-
-					}
+	
+	public Team[] teamsTied(Team[] orderedTeams) 
+	{
+		int goalDifference[] = new int[orderedTeams.length];
+		int points[] = new int[orderedTeams.length];
+		
+		// Save an array with the goal difference and points of each team
+		for (int index = 0; index < orderedTeams.length; index++)
+		{
+			goalDifference[index] = orderedTeams[index].getGoalsDifference();
+			points[index] = orderedTeams[index].getPoints();
+		}
+		
+		for (int passade = 0; passade < orderedTeams.length; ++passade)
+		{
+			for (int team = 0; team < orderedTeams.length ; ++team)
+			{
+				if ( points[passade] == points[team] && goalDifference[passade] > goalDifference[team])
+				{
+					Team aux = orderedTeams[passade];
+					orderedTeams[passade] = orderedTeams[team];
+					orderedTeams[team] = aux;
 				}
+
 			}
 		}
 
 		
-		return finalOrder;
+		return orderedTeams;
 				
 	}
 	/**
@@ -295,6 +311,13 @@ public class MainWindow extends JFrame implements ActionListener
 			if (teamsSet)
 			{
 				String[] names = askNames(teams);
+				
+				for (int name = 0; name < names.length; ++name)
+				{
+					if (names[name].equals(""))
+						names[name] = "Sin Nombre " + (name + 1);
+				}
+				
 				parser.writeOnCsv(file, names);
 				statusText.setText("¡Archivo estructurado correctamente!");
 			}
