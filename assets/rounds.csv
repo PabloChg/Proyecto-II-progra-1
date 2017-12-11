@@ -1,14 +1,14 @@
-heredia,saprissa,perez zeledon,santos
-1,heredia,1,saprissa,3
-2,heredia,2,perez zeledon,1
-3,heredia,3,santos,2
-4,saprissa,2,heredia,3
-5,saprissa,4,perez zeledon,2
-6,saprissa,1,santos,4
-7,perez zeledon,4,heredia,4
-8,perez zeledon,2,saprissa,4
-9,perez zeledon,4,santos,4
-10,santos,2,heredia,3
-11,santos,1,saprissa,2
-12,santos,1,perez zeledon,1
+saprissa,heredia,cartago,santos
+1,saprissa,HOME_GOALS,heredia,VISIT_GOALS
+2,saprissa,HOME_GOALS,cartago,VISIT_GOALS
+3,saprissa,HOME_GOALS,santos,VISIT_GOALS
+4,heredia,HOME_GOALS,saprissa,VISIT_GOALS
+5,heredia,HOME_GOALS,cartago,VISIT_GOALS
+6,heredia,HOME_GOALS,santos,VISIT_GOALS
+7,cartago,HOME_GOALS,saprissa,VISIT_GOALS
+8,cartago,HOME_GOALS,heredia,VISIT_GOALS
+9,cartago,HOME_GOALS,santos,VISIT_GOALS
+10,santos,HOME_GOALS,saprissa,VISIT_GOALS
+11,santos,HOME_GOALS,heredia,VISIT_GOALS
+12,santos,HOME_GOALS,cartago,VISIT_GOALS
 STOP

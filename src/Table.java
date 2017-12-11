@@ -65,9 +65,9 @@ public class Table extends JPanel
 		
 		for (int index = 0 ; index < teams.length; ++index) 
 		{
-			System.out.println(teams[index].getName());
+			System.out.println(teams[index].getFinalName());
 			addTextFont("# "+ (index + 1), "" );
-			addText(teams[index].getName());
+			addText(teams[index].getFinalName());
 			addText(Integer.toString(teams[index].getRoundsPlayed()));
 			addText(Integer.toString(teams[index].getRoundsWon()));
 			addText(Integer.toString(teams[index].getRoundsTied()));

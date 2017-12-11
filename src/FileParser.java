@@ -22,6 +22,8 @@ public class FileParser
 	private static final String DEFAULT_SEPARATOR = ",";
 	
 	String[] names = null;
+	// Create a boolean to indicate if the file has a syntaxes error
+	private boolean fileProperlyModified = true;
 	/**
 	 * Parses the read csv file
 	 */
@@ -58,7 +60,10 @@ public class FileParser
 			return null;
 		}
 	}
-
+	public boolean getFileProperlyModified()
+	{		
+		return this.fileProperlyModified;
+	}
 	public Team[] assignData(Team[] teams, Scanner input)
 	{
 		String line = "";
@@ -97,10 +102,12 @@ public class FileParser
 						break;
 					}
 				}
+				this.fileProperlyModified = true;
 			}
 			catch (NumberFormatException exception) // If the user didn't modify the HOME_GOALS or VISIT_GOALS
 			{
 				System.err.println("Cannot parse goals");
+				this.fileProperlyModified = false;
 			}
 		}
 		
