@@ -1,4 +1,3 @@
-import java.awt.Component;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -10,8 +9,6 @@ import java.util.Scanner;
  */
 public class FileParser 
 {
-	// Create a component
-	private Component fileComponent;
 	// Create a null reference of a file
 	private File file = null;
 	// Create a reference of the file path
@@ -30,6 +27,7 @@ public class FileParser
 	 */
 	public Team[] parse(String path, File file)
 	{        
+		this.missingGoals = false;
 		this.filePath = path;
 		this.file = file;
 		
@@ -51,15 +49,14 @@ public class FileParser
 				teams[team].calculateStatistics();
 			}
 			
-			this.fileProperlyModified = true;
 			return teams;
 			
 		}
-		catch (IOException e)
+		catch (IOException | java.util.NoSuchElementException e)
 		{
+			System.out.println("Wat");
 			this.fileProperlyModified = false;
 			this.missingGoals = true;
-			e.printStackTrace();
 			return null;
 		}
 	}
@@ -122,6 +119,7 @@ public class FileParser
 			{
 				this.missingGoals = true;
 				System.err.println("Cannot parse goals");
+				break;
 			}
 		}
 		return teams;
