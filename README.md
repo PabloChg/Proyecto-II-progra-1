@@ -11,6 +11,8 @@ Para realizar la tabla, el usuario seguirá los siguientes pasos:
 2. El usuario escribirá los nombres de cada equipo separados por comas en la primer línea del archivo
 3. En las siguientes líneas los datos se ingresarán con el formato: **número de partido, nombre del equipo de casa, goles de casa, nombre del equipo de visita, goles de visita**
 
+Para evitar errores, el programa tiene un botón que estructura el archivo creado, en el que se preguntará la cantidad de equipos y sus nombres. Lo que tendrá que editar el usuario serán los campos escritos como HOME_GOALS y VISIT_GOALS que corresponden a los goles del equipo en casa y visita de un partido
+
 
 Para que los datos sean leídos, se elegirá el archivo con el formato mencionado anteriormente. Como se muestra en la siguiente imagen:
 
