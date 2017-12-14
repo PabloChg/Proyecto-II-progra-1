@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -26,27 +27,33 @@ public class MainWindow extends JFrame implements ActionListener
 
 	private Table table = new Table();
 	
+	/**
+	 * Creates the main window of the program
+	 */
 	public MainWindow() 
 	{		
 		// Set the window title
 		super("Tabla de Posiciones");	
 		
-		// Create a new panel
-		information = new JPanel();
-
+		this.setIconImage(new ImageIcon("icon.png").getImage());
+		
 		// Set the dimensions of the window
 		this.setSize(800, 600);
 
 		BorderLayout mainLayout = new BorderLayout();
 		this.setLayout( mainLayout );
 
+		// Create the information panel
+		information = new JPanel();
 		BorderLayout infoLayout = new BorderLayout();
 		information.setLayout(infoLayout);
+		information.setBackground(Color.WHITE);
 
-		// Create the table and the buttons of the window
+		// Create the table, status pane and the buttons of the window
 		this.createTable();
-		this.createButtons();
 		this.createStatus();
+		this.createButtons();
+		
 
 		this.add(information, BorderLayout.SOUTH);
 	}
@@ -70,6 +77,7 @@ public class MainWindow extends JFrame implements ActionListener
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new GridLayout(0, 4));
 		buttons.setBorder(new TitledBorder("Opciones"));
+		buttons.setBackground(Color.WHITE);
 
 		// Create the file chooser button
 		JButton fileChooser = new JButton("Elegir archivo");
@@ -113,6 +121,7 @@ public class MainWindow extends JFrame implements ActionListener
 
 		status.add(statusText, BorderLayout.CENTER);
 		status.setBorder(new TitledBorder("Estado"));
+		status.setBackground(Color.WHITE);
 
 		information.add(status, BorderLayout.CENTER);
 	}
@@ -178,31 +187,27 @@ public class MainWindow extends JFrame implements ActionListener
 			this.fileChoosed = true;
 		}
 	}
+	
 	/**
-	 * Check if the file goal format is proper
-	 * if proper
-	 * @return true
-	 * if not 
-	 * @return false, and send to structure again
+	 * Check if the file goal format is correct
+	 * @return true if the format is correct
 	 */
-	public boolean checkGoalsStructure() {
-		if (parser.getGolesPendientes() )
+	public boolean checkGoalsStructure() 
+	{
+		if (!parser.getMissingGoals() )
 		{
 			return true;
 		}
-		else {
-			statusText.setText("¡Archivo cvs con datos invalidos, pendiente de arreglar la cantidad de goles! ");
-			
-			this.structureButton();
+		else
+		{	
+			statusText.setText("Para mostrar la tabla, debe escribir los goles en todas las jornadas.");
 			return false;
 		}
 	}
+		
 	/**
-	 * Check if the file format is proper
-	 * if proper
-	 * @return true
-	 * if not 
-	 * @return false, and send to structure again
+	 * Check if the file format is correct
+	 * @return true if the format is not correct
 	 */
 	public boolean checkSyntaxisFile()
 	{
@@ -212,12 +217,12 @@ public class MainWindow extends JFrame implements ActionListener
 		} 
 		else 
 		{
-			statusText.setText("¡Archivo cvs con datos invalidos, proceda a estructurarlo! ");
-
+			statusText.setText("Archivo csv con datos invalidos, estructurando. ");
 			this.structureButton();
 			return false;
 		}
 	}
+	
 	/**
 	 * Print the final position table
 	 */
@@ -225,7 +230,6 @@ public class MainWindow extends JFrame implements ActionListener
 	{
 		int[] points = new int [this.teams.length];
 		Team[] orderedTeams = new Team[this.teams.length];
-		int highest = -1;
 		
 		// Save an array with the points of each team
 		for (int index = 0; index < this.teams.length; index++)
@@ -233,10 +237,34 @@ public class MainWindow extends JFrame implements ActionListener
 			points[index] = this.teams[index].getPoints();
 		}
 		
+		orderedTeams = orderByPoints(points);
+		orderedTeams = orderByGoalDifference(orderedTeams);
+		orderedTeams = orderByGoalsInFavor(orderedTeams);
+		
+		//Remove the default table
+		this.remove(this.table);
+		//Create the new table
+		this.table = new Table(orderedTeams);
+		
+		this.add(table, BorderLayout.CENTER);
+		this.revalidate();
+		this.repaint();	
+	}
+	
+	/**
+	 * Algorithm to order the teams based on their points
+	 * @param points the points of each team
+	 * @return an array of teams ordered by points
+	 */
+	public Team[] orderByPoints(int[] points)
+	{
+		Team[] orderedTeams = new Team[this.teams.length];
+		
+		int highest = -1;
 		// Position of the current highest-points team
 		int currentHigh = 0;
 		
-		// Algorithm to order the teams based on their points
+
 		// We need to pass at least one time in each team to store it
 		for (int passade = 0; passade < teams.length; ++passade)
 		{
@@ -259,18 +287,16 @@ public class MainWindow extends JFrame implements ActionListener
 			orderedTeams[passade] = this.teams[currentHigh];
 		}
 		
-		orderedTeams = this.teamsTied(orderedTeams);
-		//Remove the default table
-		this.remove(this.table);
-		//Create the new table
-		this.table = new Table(orderedTeams);
-		
-		this.add(table, BorderLayout.CENTER);
-		this.revalidate();
-		this.repaint();	
+		return orderedTeams;
 	}
 	
-	public Team[] teamsTied(Team[] orderedTeams) 
+	/**
+	 * Algorithm to order the teams by goal difference
+	 * the teams were ordered by points previously
+	 * @param orderedTeams an array with teams ordered by points
+	 * @return an array of teams ordered by points and goal difference
+	 */
+	public Team[] orderByGoalDifference(Team[] orderedTeams) 
 	{
 		Team[] finalOrder = orderedTeams;
 		
@@ -278,33 +304,70 @@ public class MainWindow extends JFrame implements ActionListener
 		{
 			for (int team = 0; team < orderedTeams.length ; ++team)
 			{
-				
-				
-				if ( orderedTeams[passade].getPoints() == orderedTeams[team].getPoints() && passade <team) {
-					if (orderedTeams[passade].getGoalsDifference() < orderedTeams[team].getGoalsDifference() ) {
+				if ( orderedTeams[passade].getPoints() == orderedTeams[team].getPoints() && passade < team)
+				{
+					if (orderedTeams[passade].getGoalsDifference() < orderedTeams[team].getGoalsDifference() )
+					{
 						Team aux = orderedTeams[passade];
 						finalOrder[passade] = orderedTeams[team];
 						finalOrder[team] = aux;
-						if (passade+2 < orderedTeams.length)
+						
+						if (passade + 2 < orderedTeams.length)
 							passade++;
 						else
-							return finalOrder;
-						
-					} else {
+							return finalOrder;	
+					}
+					else
+					{
 						finalOrder[passade] = orderedTeams[passade];
-
 					}
 				}
 			}
 		}
 		return finalOrder;
 	}
+	
 	/**
-	 * setup button function
+	 * Orders the teams by goals in favor, previously ordered by points and goal difference
+	 * @param orderedTeams an array with teams previously ordered by points and goal difference
+	 * @return an array of teams ordered by goals in favor
+	 */
+	public Team[] orderByGoalsInFavor(Team[] orderedTeams)
+	{
+		Team[] finalOrder = orderedTeams;
+		
+		for (int passade = 0; passade < orderedTeams.length; ++passade)
+		{
+			for (int team = 0; team < orderedTeams.length ; ++team)
+			{
+				if ( orderedTeams[passade].getPoints() == orderedTeams[team].getPoints() && passade < team)
+				{
+					if (orderedTeams[passade].getGoalsInFavor() < orderedTeams[team].getGoalsInFavor() )
+					{
+						Team aux = orderedTeams[passade];
+						finalOrder[passade] = orderedTeams[team];
+						finalOrder[team] = aux;
+						
+						if (passade + 2 < orderedTeams.length)
+							passade++;
+						else
+							return finalOrder;	
+					}
+					else
+					{
+						finalOrder[passade] = orderedTeams[passade];
+					}
+				}
+			}
+		}
+		return finalOrder;
+	}
+	
+	/**
+	 * Structures the csv file to match the parser requirements
 	 */
 	public void structureButton() 
 	{
-
 		if (this.file == null)
 		{
 			statusText.setText("No se puede estructurar, elija un archivo primero");
@@ -335,18 +398,16 @@ public class MainWindow extends JFrame implements ActionListener
 					if (names[name].equals(""))
 						names[name] = "Sin Nombre " + (name + 1);
 				}
-				
 				parser.writeOnCsv(file, names);
 				statusText.setText("¡Archivo estructurado correctamente!");
 			}
-
 		}
-		
 	}
+	
 	/**
-	 * 
-	 * @param teams
-	 * @return
+	 * Asks for the names of the teams
+	 * @param teams the amount of teams
+	 * @return an array with the name of each team
 	 */
 	public String[] askNames(int teams)
 	{

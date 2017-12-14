@@ -30,10 +30,7 @@ public class Team
 	{
 		return this.name;
 	}
-	public String getFinalName()
-	{
-		return this.name.substring(0, 1).toUpperCase() + this.name.substring(1).toLowerCase();
-	}
+
 	/**
 	 * get the total goals made by the current team
 	 * @return total goals

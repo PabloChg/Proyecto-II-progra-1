@@ -4,8 +4,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * Parses the csv file set by the user
@@ -20,12 +18,13 @@ public class FileParser
 	private String filePath = "";
 	// Reference of the default separator of a csv file
 	private static final String DEFAULT_SEPARATOR = ",";
-	
+	// Array that contains the names of each team
 	String[] names = null;
 	// Create a boolean to indicate if the file has a syntaxes error
 	private boolean fileProperlyModified = true;
 	// Boolean to identify if after Structure goals are missing to write
-	private boolean golesPendientes = false;
+	private boolean missingGoals = false;
+	
 	/**
 	 * Parses the read csv file
 	 */
@@ -33,7 +32,6 @@ public class FileParser
 	{        
 		this.filePath = path;
 		this.file = file;
-
 		
 		// Try to create a scanner that reads the selected file
 		try (Scanner input = new Scanner( new FileReader(filePath) )) 
@@ -59,13 +57,26 @@ public class FileParser
 		}
 		catch (IOException e)
 		{
+			this.fileProperlyModified = false;
+			this.missingGoals = true;
 			e.printStackTrace();
 			return null;
 		}
 	}
-	public boolean getGolesPendientes() {
-		return this.golesPendientes;
+	
+	/**
+	 * Checks if there are missing goals on the csv file
+	 * @return true if there are missing goals
+	 */
+	public boolean getMissingGoals()
+	{
+		return this.missingGoals;
 	}
+	
+	/**
+	 * Checks if the file structure is correct
+	 * @return if the file structure is correct
+	 */
 	public boolean getFileProperlyModified()
 	{		
 		return this.fileProperlyModified;
@@ -79,9 +90,6 @@ public class FileParser
 		while(input.hasNextLine())
 		{	
 			line = input.nextLine();
-			
-			if (line.equals("STOP"))
-				break;
 				
 			String[] text = line.split(DEFAULT_SEPARATOR); 
 			
@@ -108,25 +116,22 @@ public class FileParser
 						teams[visitTeam].addGoals(visitGoals, homeGoals);
 						break;
 					}
-				}
-				
+				}	
 			}
 			catch (NumberFormatException exception) // If the user didn't modify the HOME_GOALS or VISIT_GOALS
 			{
-				// TODO Poner un mensaje que diga que tiene que meter los goles para que sirva
-				
+				this.missingGoals = true;
 				System.err.println("Cannot parse goals");
 			}
 		}
-		
-		
 		return teams;
 	}
 	
 	/**
-	 * 
-	 * @param file
-	 * @param teams
+	 * Writes on the csv file with the correct format so the program
+	 * can read it.
+	 * @param file the selected csv file
+	 * @param teams An array with the names of the teams
 	 */
 	public void writeOnCsv(File file, String[] teams)
 	{
@@ -160,10 +165,11 @@ public class FileParser
 			}
 		}
 	}
+	
 	/**
-	 * 
-	 * @param teams
-	 * @param writer
+	 * Write on the csv to store the teams on it
+	 * @param teams an array with the teams
+	 * @param writer the csv writer
 	 */
 	public void writeTeams(String[] teams, FileWriter writer)
 	{
@@ -190,10 +196,10 @@ public class FileParser
 	}
 
 	/**
-	 * 
-	 * @param teams
-	 * @param writer
-	 * @throws IOException
+	 * Writes each match that every team has
+	 * @param teams an array with the name of each team
+	 * @param writer the class that writes on the csv file
+	 * @throws IOException if the writer cannot write
 	 */
 	public void writeRounds(String[] teams, FileWriter writer) throws IOException
 	{
@@ -224,8 +230,6 @@ public class FileParser
 			}
 
 		}
-
-		writer.append("STOP" + "\n");
 	}
 
 

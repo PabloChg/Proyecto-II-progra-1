@@ -1,0 +1,11 @@
+Heredia,Saprissa,Pérez Zeledón,Santos
+1,Heredia,0,Saprissa,1
+3,Heredia,2,Santos,0
+4,Saprissa,1,Heredia,0
+5,Saprissa,2,Pérez Zeledón,1
+7,Pérez Zeledón,1,Heredia,0
+8,Pérez Zeledón,3,Saprissa,2
+9,Pérez Zeledón,1,Santos,0
+10,Santos,0,Heredia,2
+11,Santos,0,Saprissa,0
+12,Santos,1,Pérez Zeledón,1

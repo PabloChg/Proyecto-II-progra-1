@@ -11,24 +11,14 @@ public class Table extends JPanel
 {	
 
 	/**
-	 * Creates a table
+	 * Creates a blank table
 	 */
 	public Table()
 	{
 		this.setLayout(new GridLayout(13,10));
 		this.setBorder(new TitledBorder("Tabla de posiciones"));
-
-		// Add header
-		addTextFont("Posición", "Posición");
-		addTextFont("Equipos", "Equipos");
-		addTextFont("PJ", "Partidos jugados");
-		addTextFont("V", "Victorias");
-		addTextFont("E", "Empates");
-		addTextFont("D", "Derrotas");
-		addTextFont("GF", "Goles a favor");
-		addTextFont("GC", "Goles en contra");
-		addTextFont("+/-", "Diferencia de gol");
-		addTextFont("Pts", "Puntos");
+		this.setBackground(Color.WHITE);
+		this.addHeader();
 		
 		for (int index = 1; index < 13; index++) 
 		{
@@ -42,32 +32,25 @@ public class Table extends JPanel
 			addText("-");
 			addText("-");
 			addText("-");
-
 		}
 	}
 	
+	/**
+	 * Creates a position table
+	 * @param teams an array with the teams that will be in the table
+	 */
 	public Table (Team[] teams) 
 	{
 		this.setLayout(new GridLayout(teams.length + 1, 10));
-		this.setBorder(new TitledBorder("Tabla de posiciones"));
-
-		// Add header
-		addTextFont("Posición", "Posición");
-		addTextFont("Equipos", "Equipos");
-		addTextFont("PJ", "Partidos jugados");
-		addTextFont("V", "Victorias");
-		addTextFont("E", "Empates");
-		addTextFont("D", "Derrotas");
-		addTextFont("GF", "Goles a favor");
-		addTextFont("GC", "Goles en contra");
-		addTextFont("+/-", "Diferencia de gol");
-		addTextFont("Pts", "Puntos");
+		this.setBorder(new TitledBorder("Posiciones"));
+		this.setBackground(Color.WHITE);
+		this.addHeader();
 		
 		for (int index = 0 ; index < teams.length; ++index) 
 		{
-			System.out.println(teams[index].getFinalName());
+			System.out.println(teams[index].getName());
 			addTextFont("# "+ (index + 1), "" );
-			addText(teams[index].getFinalName());
+			addText(teams[index].getName());
 			addText(Integer.toString(teams[index].getRoundsPlayed()));
 			addText(Integer.toString(teams[index].getRoundsWon()));
 			addText(Integer.toString(teams[index].getRoundsTied()));
@@ -79,11 +62,30 @@ public class Table extends JPanel
 		}
 	}
 	
+	/**
+	 * Adds text to a
+	 * @param buttonName
+	 */
 	private void addText(String buttonName) 
 	{
 		JLabel text = new JLabel(buttonName, SwingConstants.CENTER);
 		text.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		this.add(text);
+	}
+	
+	private void addHeader()
+	{
+		// Add header
+		addTextFont("Posición", "Posición");
+		addTextFont("Equipos", "Equipos");
+		addTextFont("PJ", "Partidos jugados");
+		addTextFont("V", "Victorias");
+		addTextFont("E", "Empates");
+		addTextFont("D", "Derrotas");
+		addTextFont("GF", "Goles a favor");
+		addTextFont("GC", "Goles en contra");
+		addTextFont("GD", "Gol diferencia");
+		addTextFont("Pts", "Puntos");
 	}
 	
 	private void addTextFont(String text, String tooltip)
@@ -94,7 +96,6 @@ public class Table extends JPanel
 		headers.setFont(new Font("text",Font.BOLD, 15 ));
 
 		this.add(headers);
-
 	}
 
 }
