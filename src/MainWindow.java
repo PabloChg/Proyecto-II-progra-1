@@ -340,7 +340,7 @@ public class MainWindow extends JFrame implements ActionListener
 		{
 			for (int team = 0; team < orderedTeams.length ; ++team)
 			{
-				if ( orderedTeams[passade].getPoints() == orderedTeams[team].getPoints() && passade < team)
+				if ( tiedByPointsAndGoalDifference(orderedTeams, passade, team) && passade < team)
 				{
 					if (orderedTeams[passade].getGoalsInFavor() < orderedTeams[team].getGoalsInFavor() )
 					{
@@ -361,6 +361,13 @@ public class MainWindow extends JFrame implements ActionListener
 			}
 		}
 		return finalOrder;
+	}
+	
+	
+	private boolean tiedByPointsAndGoalDifference(Team[] orderedTeams, int passade, int team)
+	{
+		return orderedTeams[passade].getPoints() == orderedTeams[team].getPoints() &&
+				orderedTeams[passade].getGoalsDifference() == orderedTeams[team].getGoalsDifference();
 	}
 	
 	/**
