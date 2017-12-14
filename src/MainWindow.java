@@ -253,33 +253,32 @@ public class MainWindow extends JFrame implements ActionListener
 	
 	public Team[] teamsTied(Team[] orderedTeams) 
 	{
-		int goalDifference[] = new int[orderedTeams.length];
-		int points[] = new int[orderedTeams.length];
-		
-		// Save an array with the goal difference and points of each team
-		for (int index = 0; index < orderedTeams.length; index++)
-		{
-			goalDifference[index] = orderedTeams[index].getGoalsDifference();
-			points[index] = orderedTeams[index].getPoints();
-		}
+		Team[] finalOrder = orderedTeams;
 		
 		for (int passade = 0; passade < orderedTeams.length; ++passade)
 		{
 			for (int team = 0; team < orderedTeams.length ; ++team)
 			{
-				if ( points[passade] == points[team] && goalDifference[passade] > goalDifference[team])
-				{
-					Team aux = orderedTeams[passade];
-					orderedTeams[passade] = orderedTeams[team];
-					orderedTeams[team] = aux;
-				}
+				
+				
+				if ( orderedTeams[passade].getPoints() == orderedTeams[team].getPoints() && passade <team) {
+					if (orderedTeams[passade].getGoalsDifference() < orderedTeams[team].getGoalsDifference() ) {
+						Team aux = orderedTeams[passade];
+						finalOrder[passade] = orderedTeams[team];
+						finalOrder[team] = aux;
+						if (passade+2 < orderedTeams.length)
+							passade++;
+						else
+							return finalOrder;
+						
+					} else {
+						finalOrder[passade] = orderedTeams[passade];
 
+					}
+				}
 			}
 		}
-
-		
-		return orderedTeams;
-				
+		return finalOrder;
 	}
 	/**
 	 * setup button function

@@ -110,6 +110,7 @@ public class FileParser
 			catch (NumberFormatException exception) // If the user didn't modify the HOME_GOALS or VISIT_GOALS
 			{
 				// TODO Poner un mensaje que diga que tiene que meter los goles para que sirva
+				
 				System.err.println("Cannot parse goals");
 			}
 		}
