@@ -148,7 +148,7 @@ public class MainWindow extends JFrame implements ActionListener
 		{
 			this.teams = parser.parse(this.filePath, this.file);
 
-			if (this.checkSyntaxisFile())
+			if (this.checkSyntaxisFile() && this.checkGoalsStructure())
 			{
 				statusText.setText("¡Refrescado correctamente!");
 				this.printPoints();
@@ -169,13 +169,32 @@ public class MainWindow extends JFrame implements ActionListener
 		{
 			this.teams = parser.parse(this.filePath, this.file);
 
-			if ( this.checkSyntaxisFile() )
+			if ( this.checkSyntaxisFile() && this.checkGoalsStructure())
 			{
 				statusText.setText("File: " + this.file.getName());
 				this.printPoints();
 			}
 
 			this.fileChoosed = true;
+		}
+	}
+	/**
+	 * Check if the file goal format is proper
+	 * if proper
+	 * @return true
+	 * if not 
+	 * @return false, and send to structure again
+	 */
+	public boolean checkGoalsStructure() {
+		if (parser.getGolesPendientes() )
+		{
+			return true;
+		}
+		else {
+			statusText.setText("¡Archivo cvs con datos invalidos, pendiente de arreglar la cantidad de goles! ");
+			
+			this.structureButton();
+			return false;
 		}
 	}
 	/**

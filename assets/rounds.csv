@@ -1,14 +1,4 @@
-saprissa,santos,heredia,cartago
-3,heredia,5,saprissa,6
-4,santos,0,heredia,5
-5,santos,0,cartago,0
-1,heredia,5,santos,0
-2,heredia,5,cartago,0
-6,santos,0,saprissa,2
-7,cartago,0,heredia,5
-8,cartago,0,santos,0
-9,cartago,1,saprissa,2
-10,saprissa,2,heredia,5
-11,saprissa,2,santos,0
-12,saprissa,2,cartago,0
+saprissa ,cartago
+1,saprissa ,HOME_GOALS,cartago,VISIT_GOALS
+2,cartago,HOME_GOALS,saprissa ,VISIT_GOALS
 STOP

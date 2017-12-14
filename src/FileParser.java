@@ -24,6 +24,8 @@ public class FileParser
 	String[] names = null;
 	// Create a boolean to indicate if the file has a syntaxes error
 	private boolean fileProperlyModified = true;
+	// Boolean to identify if after Structure goals are missing to write
+	private boolean golesPendientes = false;
 	/**
 	 * Parses the read csv file
 	 */
@@ -61,7 +63,9 @@ public class FileParser
 			return null;
 		}
 	}
-	
+	public boolean getGolesPendientes() {
+		return this.golesPendientes;
+	}
 	public boolean getFileProperlyModified()
 	{		
 		return this.fileProperlyModified;
